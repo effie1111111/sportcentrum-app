@@ -13,7 +13,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/begeleider/dashboard', function () {
     return view('begeleider.dashboard');
-})->middleware('auth');
+})->middleware(['auth', 'begeleider']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
