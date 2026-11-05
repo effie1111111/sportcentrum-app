@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
-    public function index()
-    {
-        $lessen = Lesson::all();
+  public function index()
+{
+    $lessen = Lesson::with('begeleider')
+        ->withCount('enrollments')
+        ->get();
 
-        return view('lessen.index', compact('lessen'));
-    }
+    return view('lessen.index', compact('lessen'));
+}
+    
 
     public function create()
     {
