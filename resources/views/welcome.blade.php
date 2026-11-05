@@ -1,164 +1,270 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sportcentrum De Linde</title>
 
     <style>
-        :root {
-            --navy: #0a2a66;
-            --blue: #1e5bff;
-            --sky: #e8f0ff;
-            --ink: #0b1b3a;
-            --white: #ffffff;
-            --font-display: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+        /* Algemene instellingen */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            color: var(--ink);
-            line-height: 1.5;
+            font-family: Arial, sans-serif;
+            color: #0a2a66;
         }
 
-        a { color: inherit; text-decoration: none; }
-        a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
-
-        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        /* Titels: zelfde stijl op alle plekken */
-        .logo-name, h1, h2 {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-weight: 900;
-            color: var(--navy);
+        a {
+            text-decoration: none;
         }
 
-        /* ---------- Header ---------- */
-        .topbar { border-bottom: 1px solid var(--sky); }
-        .topbar .wrap {
+        /* Navigatiebalk */
+        header {
+            background-color: white;
+            padding: 15px 5%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 80px;
+            border-bottom: 2px solid #e8f0ff;
         }
 
-        .logo { display: flex; align-items: center; gap: 12px; }
-        .logo img { height: 52px; }
-        .logo-name { font-size: 18px; line-height: 1.1; }
-
-        .nav { display: flex; align-items: center; gap: 24px; font-weight: 600; }
-        .nav a:hover { color: var(--blue); }
-
-        /* ---------- Knoppen ---------- */
-        .btn {
-            display: inline-block;
-            padding: 12px 26px;
-            font-weight: 800;
-            border: 2px solid var(--white);
-            border-radius: 4px;
+        .logo img {
+            height: 55px;
+            width: auto;
         }
-        .btn-blue { background: var(--blue); color: var(--white); border-color: var(--blue); }
-        .btn-blue:hover { background: var(--navy); color: var(--white); }
-        .btn-white { background: var(--white); color: var(--navy); }
-        .btn-white:hover { background: var(--sky); color: var(--navy); }
-        .btn-line { color: var(--white); }
-        .btn-line:hover { background: var(--white); color: var(--navy); }
 
-        /* ---------- Hero ---------- */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        nav a {
+            color: #0a2a66;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #1e5bff;
+        }
+
+        /* Knoppen */
+        .button {
+            background-color: #1e5bff;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background-color: #0a2a66;
+        }
+
+        /* Welkomstgedeelte */
         .hero {
-            background: linear-gradient(135deg, var(--navy), var(--blue));
-            color: var(--white);
-            padding: 96px 0 150px;
-            clip-path: polygon(0 0, 100% 0, 100% 82%, 0 100%);
+            background: linear-gradient(120deg, #0a2a66, #1e5bff);
+            color: white;
+            padding: 100px 8%;
+            text-align: left;
         }
+
         .hero h1 {
-            color: var(--white);
+            font-size: 48px;
+            font-weight: 900;
             text-transform: uppercase;
-            font-size: clamp(2.4rem, 7vw, 5rem);
-            line-height: 1;
-            max-width: 12ch;
+            max-width: 650px;
+            margin-bottom: 20px;
+            font-style: italic;
         }
-        .hero p { margin-top: 24px; max-width: 46ch; font-size: 1.15rem; color: #dce7ff; }
-        .actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 16px; }
 
-        /* ---------- Zo werkt het ---------- */
-        .steps { padding: 40px 0 80px; }
-        .steps h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 36px; }
-        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-        .step { padding: 8px 32px; border-left: 4px solid var(--blue); }
-        .step h3 { font-size: 1.2rem; color: var(--navy); margin-bottom: 8px; }
-        .step p { color: #3a4a6b; }
+        .hero p {
+            font-size: 19px;
+            max-width: 550px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
 
-        /* ---------- Footer ---------- */
-        .footer { background: var(--navy); color: #c7d6ff; padding: 28px 0; }
+        .hero .button {
+            background-color: white;
+            color: #0a2a66;
+            display: inline-block;
+        }
 
-        @media (max-width: 760px) {
-            .hide-sm, .logo-name { display: none; }
-            .hero { padding: 64px 0 110px; }
-            .steps-grid { grid-template-columns: 1fr; gap: 28px; }
+        /* Informatieblokken */
+        .steps {
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .steps h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .steps-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .step {
+            background-color: #e8f0ff;
+            padding: 30px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .step h3 {
+            color: #1e5bff;
+            margin-bottom: 15px;
+        }
+
+        .step p {
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0a2a66;
+            color: white;
+            padding: 35px 5%;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            margin: 0 10px;
+        }
+
+        /* Mobiele weergave */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .steps-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <header class="topbar">
-        <div class="wrap">
-            <a href="/" class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Sportcentrum De Linde">
-                <span class="logo-name">Sportcentrum<br>De Linde</span>
-            </a>
+    <!-- Navigatie -->
+    <header>
 
-            <nav class="nav">
-                <a href="#zo-werkt-het" class="hide-sm">Zo werkt het</a>
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="btn btn-blue">Mijn omgeving</a>
-                @else
-                    <a href="{{ route('login') }}">Inloggen</a>
-                    <a href="{{ route('register') }}" class="btn btn-blue">Account aanmaken</a>
-                @endauth
-            </nav>
-        </div>
+        <a href="/" class="logo">
+            <img src="{{ asset('images/logo-horizontaal.png') }}"
+                 alt="Sportcentrum De Linde">
+        </a>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/lessen">Lessen</a>
+            <a href="/reserveren">Reserveren</a>
+            <a href="/over-ons">Over ons</a>
+            <a href="/contact">Contact</a>
+
+            <a href="{{ route('login') }}">Inloggen</a>
+
+            <a href="{{ route('register') }}" class="button">
+                Account aanmaken
+            </a>
+        </nav>
+
     </header>
 
+
+    <!-- Welkomstgedeelte -->
     <main>
+
         <section class="hero">
-            <div class="wrap">
-                <h1>Reserveer je les. Kom in beweging.</h1>
-                <p>Bekijk de lessen van Sportcentrum De Linde, schrijf je in en meld je af. Alles online, geen schriftjes meer.</p>
 
-                <div class="actions">
-                    <a href="{{ route('register') }}" class="btn btn-white">Account aanmaken</a>
-                    <a href="{{ route('login') }}" class="btn btn-line">Inloggen</a>
-                </div>
-            </div>
+            <h1>Reserveer je les. Kom in beweging!</h1>
+
+            <p>
+                Bekijk de lessen van Sportcentrum De Linde,
+                schrijf je in en meld je af.
+                Alles online, snel en eenvoudig.
+            </p>
+
+            <a href="/lessen" class="button">
+                Bekijk de lessen
+            </a>
+
         </section>
 
+
+        <!-- Zo werkt het -->
         <section class="steps" id="zo-werkt-het">
-            <div class="wrap">
-                <h2>Zo werkt het</h2>
-                <div class="steps-grid">
-                    <div class="step">
-                        <h3>Reserveer een les</h3>
-                        <p>Kies een lesmoment dat je past en schrijf je in met je eigen account.</p>
-                    </div>
-                    <div class="step">
-                        <h3>Zit de les vol?</h3>
-                        <p>Ga op de wachtlijst. Komt er een plek vrij, dan krijg je een e-mail.</p>
-                    </div>
-                    <div class="step">
-                        <h3>Afmelden tot 2 uur van tevoren</h3>
-                        <p>Kun je niet? Annuleer je reservering vanuit je overzicht.</p>
-                    </div>
+
+            <h2>Zo werkt het</h2>
+
+            <div class="steps-container">
+
+                <div class="step">
+                    <h3>Reserveer een les</h3>
+                    <p>
+                        Kies een lesmoment dat bij je past
+                        en schrijf je in met je eigen account.
+                    </p>
                 </div>
+
+                <div class="step">
+                    <h3>Zit de les vol?</h3>
+                    <p>
+                        Ga op de wachtlijst.
+                        Komt er een plek vrij, dan krijg je een e-mail.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <h3>Afmelden</h3>
+                    <p>
+                        Kun je niet komen?
+                        Annuleer je reservering eenvoudig online.
+                    </p>
+                </div>
+
             </div>
+
         </section>
+
     </main>
 
-    <footer class="footer">
-        <div class="wrap">&copy; {{ date('Y') }} Sportcentrum De Linde</div>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>&copy; {{ date('Y') }} Sportcentrum De Linde</p>
+
+        <br>
+
+        <a href="/">Home</a>
+        <a href="/lessen">Lessen</a>
+        <a href="/reserveren">Reserveren</a>
+        <a href="/over-ons">Over ons</a>
+        <a href="/contact">Contact</a>
+
     </footer>
 
 </body>
