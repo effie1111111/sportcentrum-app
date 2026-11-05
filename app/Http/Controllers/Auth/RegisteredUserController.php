@@ -48,6 +48,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        if ($user->role === 'begeleider') {
+    return redirect('/begeleider/dashboard');
+}
         return redirect(route('dashboard', absolute: false));
     }
 }
