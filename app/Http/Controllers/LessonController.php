@@ -9,13 +9,24 @@ use Illuminate\Validation\Rule;
 
 class LessonController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->validate([
+            'begeleider_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('users', 'id')
+                    ->where(fn ($query) => $query->where('role', 'begeleider')),
+            ],
+        ]);
+
         $query = Lesson::with('begeleider')
             ->withCount('enrollments');
 
-        if (auth()->user()->role === 'begeleider') {
-            $query->where('begeleider_id', auth()->id());
+        if ($request->user()->role === 'begeleider') {
+            $query->where('begeleider_id', $request->user()->id);
+        } elseif (! empty($filters['begeleider_id'])) {
+            $query->where('begeleider_id', $filters['begeleider_id']);
         }
 
         $lessen = $query
@@ -23,7 +34,17 @@ class LessonController extends Controller
             ->orderBy('begintijd')
             ->get();
 
-        return view('lessen.index', compact('lessen'));
+        $begeleiders = User::where('role', 'begeleider')
+            ->orderBy('name')
+            ->get();
+
+        $selectedBegeleider = $filters['begeleider_id'] ?? '';
+
+        return view('lessen.index', compact(
+            'lessen',
+            'begeleiders',
+            'selectedBegeleider'
+        ));
     }
 
     public function create()

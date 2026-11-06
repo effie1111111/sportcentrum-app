@@ -49,6 +49,48 @@
                 </div>
             </div>
 
+            @if (auth()->user()->role !== 'begeleider')
+                <form
+                    method="GET"
+                    action="{{ route('lessen.index') }}"
+                    class="mb-8 flex flex-col gap-3 rounded-xl bg-white p-5 shadow-sm sm:flex-row sm:items-end">
+                    <div class="flex-1">
+                        <label for="begeleider_id" class="mb-1 block font-medium text-gray-700">
+                            Filter op begeleider
+                        </label>
+
+                        <select
+                            id="begeleider_id"
+                            name="begeleider_id"
+                            class="w-full rounded-lg border-gray-300 shadow-sm">
+                            <option value="">Alle begeleiders</option>
+
+                            @foreach ($begeleiders as $begeleider)
+                                <option
+                                    value="{{ $begeleider->id }}"
+                                    @selected((string) $selectedBegeleider === (string) $begeleider->id)>
+                                    {{ $begeleider->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">
+                        Filter toepassen
+                    </button>
+
+                    @if ($selectedBegeleider)
+                        <a
+                            href="{{ route('lessen.index') }}"
+                            class="rounded-lg bg-gray-200 px-5 py-3 text-center font-semibold text-gray-700 hover:bg-gray-300">
+                            Filter wissen
+                        </a>
+                    @endif
+                </form>
+            @endif
+
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @forelse ($lessen as $les)
                     <div class="overflow-hidden rounded-2xl bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg">
@@ -120,7 +162,7 @@
                         @if (auth()->user()->role === 'begeleider')
                             Er zijn nog geen lessen aan jou toegewezen.
                         @else
-                            Er zijn momenteel geen lessen beschikbaar.
+                            Er zijn geen lessen gevonden voor deze begeleider.
                         @endif
                     </div>
                 @endforelse
