@@ -62,6 +62,17 @@ class LessonController extends Controller
             ->with('success', 'De les is aangemaakt.');
     }
 
+    public function destroy(Lesson $lesson)
+    {
+        $this->onlyAllowAdmin();
+
+        $lesson->delete();
+
+        return redirect()
+            ->route('lessen.index')
+            ->with('success', 'De les en bijbehorende inschrijvingen zijn verwijderd.');
+    }
+
     private function onlyAllowAdmin(): void
     {
         $user = auth()->user();

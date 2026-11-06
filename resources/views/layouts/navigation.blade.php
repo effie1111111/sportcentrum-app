@@ -19,9 +19,15 @@
                         </a>
                     @endif
 
-                    <a href="{{ route('lessen.index') }}" class="text-sm text-white hover:text-blue-200">
-                        Lessen
+                    <a href="{{ url('/') }}" class="text-sm text-white hover:text-blue-200">
+                        Home
                     </a>
+
+                    @if (auth()->user()->role !== 'begeleider')
+                        <a href="{{ route('lessen.index') }}" class="text-sm text-white hover:text-blue-200">
+                            Lessen
+                        </a>
+                    @endif
 
                     @if (auth()->user()->role === 'gebruiker')
                         <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="text-sm text-white hover:text-blue-200">
@@ -79,9 +85,15 @@
             </a>
         @endif
 
-        <a href="{{ route('lessen.index') }}" class="block text-white">
-            Lessen
+        <a href="{{ url('/') }}" class="block text-white">
+            Home
         </a>
+
+        @if (auth()->user()->role !== 'begeleider')
+            <a href="{{ route('lessen.index') }}" class="block text-white">
+                Lessen
+            </a>
+        @endif
 
         @if (auth()->user()->role === 'gebruiker')
             <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="block text-white">

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -8,7 +7,6 @@
     <title>Sportcentrum De Linde</title>
 
     <style>
-        /* Algemene instellingen */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +22,6 @@
             text-decoration: none;
         }
 
-        /* Navigatiebalk */
         header {
             background-color: white;
             padding: 15px 5%;
@@ -54,20 +51,39 @@
             color: #1e5bff;
         }
 
-        /* Knoppen */
+        .logout-form {
+            display: inline;
+        }
+
+        .logout-button {
+            border: 0;
+            background: transparent;
+            color: #0a2a66;
+            cursor: pointer;
+            font: inherit;
+            font-weight: bold;
+        }
+
+        .logout-button:hover {
+            color: #1e5bff;
+        }
+
         .button {
+            display: inline-block;
             background-color: #1e5bff;
             color: white;
             padding: 12px 22px;
+            border: 0;
             border-radius: 6px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .button:hover {
             background-color: #0a2a66;
+            color: white;
         }
 
-        /* Welkomstgedeelte */
         .hero {
             background: linear-gradient(120deg, #0a2a66, #1e5bff);
             color: white;
@@ -94,18 +110,18 @@
         .hero .button {
             background-color: white;
             color: #0a2a66;
-            display: inline-block;
         }
 
-        /* Informatieblokken */
-        .steps {
+        .steps,
+        .info-section {
             padding: 60px 5%;
             text-align: center;
         }
 
-        .steps h2 {
+        .steps h2,
+        .info-section h2 {
             font-size: 32px;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
         }
 
         .steps-container {
@@ -126,11 +142,15 @@
             margin-bottom: 15px;
         }
 
-        .step p {
+        .step p,
+        .info-section p {
             line-height: 1.6;
         }
 
-        /* Footer */
+        .info-section {
+            background-color: #f5f8ff;
+        }
+
         footer {
             background-color: #0a2a66;
             color: white;
@@ -143,7 +163,6 @@
             margin: 0 10px;
         }
 
-        /* Mobiele weergave */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -168,104 +187,117 @@
 </head>
 
 <body>
-
-    <!-- Navigatie -->
     <header>
-
         <a href="/" class="logo">
-            <img src="{{ asset('images/logo-horizontaal.png') }}"
-                 alt="Sportcentrum De Linde">
+            <img
+                src="{{ asset('images/logo-horizontaal.png') }}"
+                alt="Sportcentrum De Linde">
         </a>
 
         <nav>
             <a href="/">Home</a>
-            <a href="/lessen">Lessen</a>
-            <a href="/reserveren">Reserveren</a>
-            <a href="/over-ons">Over ons</a>
-            <a href="/contact">Contact</a>
+            <a href="#over-ons">Over ons</a>
+            <a href="#contact">Contact</a>
 
-            <a href="{{ route('login') }}">Inloggen</a>
+            @auth
+                @if (auth()->user()->role === 'begeleider')
+                    <a href="{{ route('begeleider.dashboard') }}">Mijn rooster</a>
+                @else
+                    <a href="{{ route('lessen.index') }}">Lessen</a>
 
-            <a href="{{ route('register') }}" class="button">
-                Account aanmaken
-            </a>
+                    @if (auth()->user()->role === 'gebruiker')
+                        <a href="{{ route('lessen.mijn-inschrijvingen') }}">Mijn inschrijvingen</a>
+                    @endif
+
+                    @if (auth()->user()->role === 'admin' || auth()->user()->rol === 'beheerder')
+                        <a href="{{ route('lessen.aanmaken') }}">Les aanmaken</a>
+                    @endif
+                @endif
+
+                <form class="logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="logout-button" type="submit">
+                        Uitloggen ({{ auth()->user()->name }})
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Inloggen</a>
+                <a href="{{ route('register') }}" class="button">Account aanmaken</a>
+            @endauth
         </nav>
-
     </header>
 
-
-    <!-- Welkomstgedeelte -->
     <main>
-
         <section class="hero">
-
-            <h1>Reserveer je les. Kom in beweging!</h1>
+            <h1>Schrijf je in voor een les. Kom in beweging!</h1>
 
             <p>
-                Bekijk de lessen van Sportcentrum De Linde,
-                schrijf je in en meld je af.
-                Alles online, snel en eenvoudig.
+                Bekijk de lessen van Sportcentrum De Linde en vind een les
+                die bij jou past.
             </p>
 
-            <a href="/lessen" class="button">
-                Bekijk de lessen
-            </a>
-
+            @auth
+                @if (auth()->user()->role === 'begeleider')
+                    <a href="{{ route('begeleider.dashboard') }}" class="button">
+                        Bekijk mijn rooster
+                    </a>
+                @else
+                    <a href="{{ route('lessen.index') }}" class="button">
+                        Bekijk de lessen
+                    </a>
+                @endif
+            @else
+                <a href="{{ route('lessen.index') }}" class="button">
+                    Bekijk de lessen
+                </a>
+            @endauth
         </section>
 
-
-        <!-- Zo werkt het -->
         <section class="steps" id="zo-werkt-het">
-
             <h2>Zo werkt het</h2>
 
             <div class="steps-container">
-
                 <div class="step">
-                    <h3>Reserveer een les</h3>
-                    <p>
-                        Kies een lesmoment dat bij je past
-                        en schrijf je in met je eigen account.
-                    </p>
+                    <h3>Schrijf je in voor een les</h3>
+                    <p>Kies een lesmoment dat bij je past en schrijf je in met je account.</p>
                 </div>
 
                 <div class="step">
                     <h3>Zit de les vol?</h3>
-                    <p>
-                        Ga op de wachtlijst.
-                        Komt er een plek vrij, dan krijg je een e-mail.
-                    </p>
+                    <p>Ga op de wachtlijst. Komt er een plek vrij, dan krijg je een e-mail.</p>
                 </div>
 
                 <div class="step">
                     <h3>Afmelden</h3>
-                    <p>
-                        Kun je niet komen?
-                        Annuleer je reservering eenvoudig online.
-                    </p>
+                    <p>Kun je niet komen? Annuleer je inschrijving eenvoudig online.</p>
                 </div>
-
             </div>
-
         </section>
 
+        <section class="info-section" id="over-ons">
+            <h2>Over ons</h2>
+            <p>
+                Sportcentrum De Linde helpt je om actief te blijven en lessen te
+                vinden die bij jou passen. Bekijk het lesaanbod en ontdek wat bij
+                jouw sportdoelen aansluit.
+            </p>
+        </section>
+
+        <section class="info-section" id="contact">
+            <h2>Contact</h2>
+            <p>
+                Heb je een vraag over lessen, je rooster of een inschrijving?
+                Neem contact op met de balie van Sportcentrum De Linde.
+            </p>
+        </section>
     </main>
 
-
-    <!-- Footer -->
     <footer>
-
         <p>&copy; {{ date('Y') }} Sportcentrum De Linde</p>
-
         <br>
-
         <a href="/">Home</a>
-        <a href="/lessen">Lessen</a>
-        <a href="/reserveren">Reserveren</a>
-        <a href="/over-ons">Over ons</a>
-        <a href="/contact">Contact</a>
-
+        <a href="#over-ons">Over ons</a>
+        <a href="#contact">Contact</a>
     </footer>
-
 </body>
 </html>

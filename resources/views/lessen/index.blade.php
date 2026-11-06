@@ -97,6 +97,22 @@
                                     </button>
                                 </form>
                             @endif
+
+                            @if (auth()->user()->role === 'admin' || auth()->user()->rol === 'beheerder')
+                                <form
+                                    method="POST"
+                                    action="{{ route('lessen.verwijderen', $les) }}"
+                                    onsubmit="return confirm('Weet je zeker dat je deze les wilt verwijderen? De inschrijvingen worden ook verwijderd.')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="w-full rounded-lg bg-red-600 px-4 py-3 font-semibold text-white transition hover:bg-red-700">
+                                        Les verwijderen
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 @empty
