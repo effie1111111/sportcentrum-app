@@ -154,9 +154,6 @@ class DatabaseSeeder extends Seeder
             ['naam' => 'Spinning', 'beschrijving' => 'Energieke indoor cyclingles.'],
             ['naam' => 'Yoga', 'beschrijving' => 'Rustige les met aandacht voor houding en ademhaling.'],
             ['naam' => 'Aquagym', 'beschrijving' => 'Bewegen en trainen in het zwembad.'],
-            ['naam' => 'Fitness', 'beschrijving' => 'Een complete training voor kracht en conditie.'],
-            ['naam' => 'Pilates', 'beschrijving' => 'Training gericht op houding, balans en stabiliteit.'],
-            ['naam' => 'Zumba', 'beschrijving' => 'Een energieke dansles op muziek.'],
         ];
 
         $activiteiten = collect($activiteitenData)->mapWithKeys(function (array $activiteit) use ($beheerderId) {
@@ -184,9 +181,6 @@ class DatabaseSeeder extends Seeder
             ['activiteit' => 'Spinning', 'dag' => 1, 'start' => '18:00', 'duur' => 60, 'capaciteit' => 16],
             ['activiteit' => 'Yoga', 'dag' => 2, 'start' => '19:00', 'duur' => 60, 'capaciteit' => 12],
             ['activiteit' => 'Aquagym', 'dag' => 3, 'start' => '10:00', 'duur' => 45, 'capaciteit' => 20],
-            ['activiteit' => 'Fitness', 'dag' => 4, 'start' => '17:30', 'duur' => 60, 'capaciteit' => 15],
-            ['activiteit' => 'Pilates', 'dag' => 5, 'start' => '09:00', 'duur' => 60, 'capaciteit' => 12],
-            ['activiteit' => 'Zumba', 'dag' => 6, 'start' => '11:00', 'duur' => 60, 'capaciteit' => 18],
         ];
 
         $lesmomenten = collect($lesmomentData)->mapWithKeys(function (array $les) use ($activiteiten) {
@@ -293,36 +287,6 @@ class DatabaseSeeder extends Seeder
                 'eindtijd' => '19:00:00',
                 'locatie' => 'Spinningzaal',
                 'max_deelnemers' => 12,
-                'begeleider_id' => $begeleiderMarkId,
-            ],
-            [
-                'naam' => 'Pilates',
-                'beschrijving' => 'Verbeter je balans, houding en spiercontrole.',
-                'dagen' => 3,
-                'begintijd' => '10:00:00',
-                'eindtijd' => '11:00:00',
-                'locatie' => 'Zaal B',
-                'max_deelnemers' => 10,
-                'begeleider_id' => $begeleiderLisaId,
-            ],
-            [
-                'naam' => 'Zumba',
-                'beschrijving' => 'Dans en beweeg op vrolijke muziek.',
-                'dagen' => 4,
-                'begintijd' => '19:00:00',
-                'eindtijd' => '20:00:00',
-                'locatie' => 'Zaal A',
-                'max_deelnemers' => 20,
-                'begeleider_id' => $begeleiderMarkId,
-            ],
-            [
-                'naam' => 'Fitness Circuit',
-                'beschrijving' => 'Circuittraining met verschillende krachtoefeningen.',
-                'dagen' => 5,
-                'begintijd' => '17:00:00',
-                'eindtijd' => '18:00:00',
-                'locatie' => 'Fitnessruimte',
-                'max_deelnemers' => 16,
                 'begeleider_id' => $begeleiderMarkId,
             ],
             [

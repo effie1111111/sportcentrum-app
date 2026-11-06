@@ -1,4 +1,3 @@
-```blade
 <x-app-layout>
 
     {{-- Welkomstbanner --}}
