@@ -1,25 +1,37 @@
-
 <nav x-data="{ open: false }" class="border-b border-blue-800 bg-blue-700">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
-
             <div class="flex items-center gap-8">
-                <a href="{{ route('dashboard') }}" class="text-lg font-bold text-white">
+                <a
+                    href="{{ auth()->user()->role === 'begeleider' ? url('/begeleider/dashboard') : route('dashboard') }}"
+                    class="text-lg font-bold text-white">
                     Sportcentrum De Linde
                 </a>
 
                 <div class="hidden items-center gap-6 sm:flex">
-                    <a href="{{ route('dashboard') }}" class="text-sm text-white hover:text-blue-200">
-                        Dashboard
-                    </a>
+                    @if (auth()->user()->role === 'begeleider')
+                        <a href="{{ url('/begeleider/dashboard') }}" class="text-sm text-white hover:text-blue-200">
+                            Begeleiderdashboard
+                        </a>
+
+                        <a href="{{ url('/lessen/aanmaken') }}" class="text-sm text-white hover:text-blue-200">
+                            Les aanmaken
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}" class="text-sm text-white hover:text-blue-200">
+                            Dashboard
+                        </a>
+                    @endif
 
                     <a href="{{ route('lessen.index') }}" class="text-sm text-white hover:text-blue-200">
                         Lessen
                     </a>
 
-                    <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="text-sm text-white hover:text-blue-200">
-                        Mijn inschrijvingen
-                    </a>
+                    @if (auth()->user()->role === 'gebruiker')
+                        <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="text-sm text-white hover:text-blue-200">
+                            Mijn inschrijvingen
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -38,7 +50,8 @@
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')"
+                            <x-dropdown-link
+                                :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 Uitloggen
                             </x-dropdown-link>
@@ -54,8 +67,27 @@
     </div>
 
     <div x-show="open" class="space-y-2 px-4 pb-4 sm:hidden">
-        <a href="{{ route('dashboard') }}" class="block text-white">Dashboard</a>
-        <a href="{{ route('lessen.index') }}" class="block text-white">Lessen</a>
-        <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="block text-white">Mijn inschrijvingen</a>
+        @if (auth()->user()->role === 'begeleider')
+            <a href="{{ url('/begeleider/dashboard') }}" class="block text-white">
+                Begeleiderdashboard
+            </a>
+            <a href="{{ url('/lessen/aanmaken') }}" class="block text-white">
+                Les aanmaken
+            </a>
+        @else
+            <a href="{{ route('dashboard') }}" class="block text-white">
+                Dashboard
+            </a>
+        @endif
+
+        <a href="{{ route('lessen.index') }}" class="block text-white">
+            Lessen
+        </a>
+
+        @if (auth()->user()->role === 'gebruiker')
+            <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="block text-white">
+                Mijn inschrijvingen
+            </a>
+        @endif
     </div>
 </nav>

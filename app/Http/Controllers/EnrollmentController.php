@@ -9,6 +9,8 @@ class EnrollmentController extends Controller
 {
     public function store(Lesson $lesson)
     {
+        $this->onlyAllowUsers();
+
         if ($lesson->enrollments()->where('user_id', auth()->id())->exists()) {
             return back()->with('error', 'Je bent al ingeschreven voor deze les.');
         }
@@ -30,21 +32,30 @@ class EnrollmentController extends Controller
 
     public function mijnInschrijvingen()
     {
+        $this->onlyAllowUsers();
+
         $inschrijvingen = Enrollment::with('lesson')
             ->where('user_id', auth()->id())
             ->get();
 
         return view('lessen.mijn-inschrijvingen', compact('inschrijvingen'));
-    
     }
+
     public function annuleren(Enrollment $enrollment)
-{
-    if ($enrollment->user_id !== auth()->id()) {
-        abort(403);
+    {
+        $this->onlyAllowUsers();
+
+        if ($enrollment->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $enrollment->delete();
+
+        return back()->with('success', 'Je inschrijving is geannuleerd.');
     }
 
-    $enrollment->delete();
-
-    return back()->with('success', 'Je inschrijving is geannuleerd.');
-}
+    private function onlyAllowUsers(): void
+    {
+        abort_unless(auth()->user()->role === 'gebruiker', 403);
+    }
 }
