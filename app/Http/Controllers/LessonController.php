@@ -3,46 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lesson;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LessonController extends Controller
 {
-  public function index()
-{
-    $lessen = Lesson::with('begeleider')
-        ->withCount('enrollments')
-        ->get();
+    public function index()
+    {
+        $query = Lesson::with('begeleider')
+            ->withCount('enrollments');
 
-    return view('lessen.index', compact('lessen'));
-}
-    
+        if (auth()->user()->role === 'begeleider') {
+            $query->where('begeleider_id', auth()->id());
+        }
+
+        $lessen = $query
+            ->orderBy('datum')
+            ->orderBy('begintijd')
+            ->get();
+
+        return view('lessen.index', compact('lessen'));
+    }
 
     public function create()
     {
-        return view('lessen.aanmaken');
+        $this->onlyAllowAdmin();
+
+        $begeleiders = User::where('role', 'begeleider')
+            ->orderBy('name')
+            ->get();
+
+        return view('lessen.aanmaken', compact('begeleiders'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'naam' => 'required|string|max:255',
-            'datum' => 'required|date',
-            'begintijd' => 'required',
-            'eindtijd' => 'required',
-            'locatie' => 'required|string|max:255',
-            'max_deelnemers' => 'required|integer|min:1',
+        $this->onlyAllowAdmin();
+
+        $data = $request->validate([
+            'naam' => ['required', 'string', 'max:255'],
+            'datum' => ['required', 'date'],
+            'begintijd' => ['required'],
+            'eindtijd' => ['required'],
+            'locatie' => ['required', 'string', 'max:255'],
+            'max_deelnemers' => ['required', 'integer', 'min:1'],
+            'begeleider_id' => [
+                'required',
+                Rule::exists('users', 'id')
+                    ->where(fn ($query) => $query->where('role', 'begeleider')),
+            ],
         ]);
 
-        Lesson::create([
-            'naam' => $request->naam,
-            'datum' => $request->datum,
-            'begintijd' => $request->begintijd,
-            'eindtijd' => $request->eindtijd,
-            'locatie' => $request->locatie,
-            'max_deelnemers' => $request->max_deelnemers,
-            'begeleider_id' => auth()->id(),
-        ]);
+        Lesson::create($data);
 
-        return redirect()->route('lessen.index');
+        return redirect()
+            ->route('lessen.index')
+            ->with('success', 'De les is aangemaakt.');
+    }
+
+    private function onlyAllowAdmin(): void
+    {
+        $user = auth()->user();
+
+        abort_unless(
+            $user && ($user->role === 'admin' || $user->rol === 'beheerder'),
+            403
+        );
     }
 }

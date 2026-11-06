@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
          */
         $gebruikersData = [
             [
-                'name' => 'Beheerder De Linde',
-                'email' => 'beheerder@delinde.test',
+                'name' => 'Admin',
+                'email' => 'Admin@gmail.com',
                 'telefoon' => '0612345678',
                 'rol' => 'beheerder',
                 'role' => 'admin',
@@ -103,7 +103,11 @@ class DatabaseSeeder extends Seeder
                     'telefoon' => $data['telefoon'],
                     'rol' => $data['rol'],
                     'role' => $data['role'],
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make(
+                        $data['email'] === 'Admin@gmail.com'
+                            ? '12345678'
+                            : 'password'
+                    ),
                     'email_verified_at' => now(),
                     'updated_at' => now(),
                     'created_at' => now(),
@@ -115,7 +119,7 @@ class DatabaseSeeder extends Seeder
                 ->value('id')];
         });
 
-        $beheerderId = $gebruikers['beheerder@delinde.test'];
+        $beheerderId = $gebruikers['Admin@gmail.com'];
         $begeleiderLisaId = $gebruikers['lisa.jansen@delinde.test'];
         $begeleiderMarkId = $gebruikers['mark.bakker@delinde.test'];
 
@@ -266,7 +270,7 @@ class DatabaseSeeder extends Seeder
         );
 
         /*
-         * NIEUWE LESSSENSYSTEEM: LESSONS
+         * NIEUWE LESSENSYSTEEM: LESSONS
          */
         $lessonsData = [
             [

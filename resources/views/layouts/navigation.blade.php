@@ -3,19 +3,15 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center gap-8">
                 <a
-                    href="{{ auth()->user()->role === 'begeleider' ? url('/begeleider/dashboard') : route('dashboard') }}"
+                    href="{{ auth()->user()->role === 'begeleider' ? route('begeleider.dashboard') : route('dashboard') }}"
                     class="text-lg font-bold text-white">
                     Sportcentrum De Linde
                 </a>
 
                 <div class="hidden items-center gap-6 sm:flex">
                     @if (auth()->user()->role === 'begeleider')
-                        <a href="{{ url('/begeleider/dashboard') }}" class="text-sm text-white hover:text-blue-200">
-                            Begeleiderdashboard
-                        </a>
-
-                        <a href="{{ url('/lessen/aanmaken') }}" class="text-sm text-white hover:text-blue-200">
-                            Les aanmaken
+                        <a href="{{ route('begeleider.dashboard') }}" class="text-sm text-white hover:text-blue-200">
+                            Mijn rooster
                         </a>
                     @else
                         <a href="{{ route('dashboard') }}" class="text-sm text-white hover:text-blue-200">
@@ -30,6 +26,12 @@
                     @if (auth()->user()->role === 'gebruiker')
                         <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="text-sm text-white hover:text-blue-200">
                             Mijn inschrijvingen
+                        </a>
+                    @endif
+
+                    @if (auth()->user()->role === 'admin' || auth()->user()->rol === 'beheerder')
+                        <a href="{{ route('lessen.aanmaken') }}" class="text-sm text-white hover:text-blue-200">
+                            Les aanmaken
                         </a>
                     @endif
                 </div>
@@ -68,11 +70,8 @@
 
     <div x-show="open" class="space-y-2 px-4 pb-4 sm:hidden">
         @if (auth()->user()->role === 'begeleider')
-            <a href="{{ url('/begeleider/dashboard') }}" class="block text-white">
-                Begeleiderdashboard
-            </a>
-            <a href="{{ url('/lessen/aanmaken') }}" class="block text-white">
-                Les aanmaken
+            <a href="{{ route('begeleider.dashboard') }}" class="block text-white">
+                Mijn rooster
             </a>
         @else
             <a href="{{ route('dashboard') }}" class="block text-white">
@@ -87,6 +86,12 @@
         @if (auth()->user()->role === 'gebruiker')
             <a href="{{ route('lessen.mijn-inschrijvingen') }}" class="block text-white">
                 Mijn inschrijvingen
+            </a>
+        @endif
+
+        @if (auth()->user()->role === 'admin' || auth()->user()->rol === 'beheerder')
+            <a href="{{ route('lessen.aanmaken') }}" class="block text-white">
+                Les aanmaken
             </a>
         @endif
     </div>

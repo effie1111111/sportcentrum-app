@@ -1,18 +1,15 @@
 <x-app-layout>
-    {{-- Welkomstbanner --}}
     <div class="bg-blue-700 px-6 py-10 text-white">
         <div class="mx-auto max-w-7xl">
             <div class="mb-2 text-sm font-semibold uppercase tracking-wider text-blue-200">
                 Sportcentrum De Linde
             </div>
 
-            <h1 class="text-3xl font-bold">
-                Kom in beweging!
-            </h1>
+            <h1 class="text-3xl font-bold">Kom in beweging!</h1>
 
             <div class="mt-2 text-blue-100">
                 @if (auth()->user()->role === 'begeleider')
-                    Bekijk het lesaanbod en beheer je lessen.
+                    Bekijk de lessen in jouw rooster.
                 @else
                     Ontdek ons lesaanbod en vind een les die bij jou past.
                 @endif
@@ -20,10 +17,8 @@
         </div>
     </div>
 
-    {{-- Lesaanbod --}}
     <div class="min-h-screen bg-blue-50 px-6 py-10">
         <div class="mx-auto max-w-7xl">
-            {{-- Meldingen --}}
             @if (session('success'))
                 <div class="mb-6 rounded-lg bg-green-100 p-4 text-green-800">
                     {{ session('success') }}
@@ -38,18 +33,22 @@
 
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-blue-950">
-                    Ons lesaanbod
+                    @if (auth()->user()->role === 'begeleider')
+                        Mijn rooster
+                    @else
+                        Ons lesaanbod
+                    @endif
                 </h2>
+
                 <div class="mt-1 text-gray-600">
                     @if (auth()->user()->role === 'begeleider')
-                        Bekijk de geplande lessen.
+                        Dit zijn de lessen die aan jou zijn toegewezen.
                     @else
                         Bekijk onze lessen en schrijf je eenvoudig in.
                     @endif
                 </div>
             </div>
 
-            {{-- Leskaarten --}}
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @forelse ($lessen as $les)
                     <div class="overflow-hidden rounded-2xl bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg">
@@ -102,7 +101,11 @@
                     </div>
                 @empty
                     <div class="text-gray-600">
-                        Er zijn momenteel geen lessen beschikbaar.
+                        @if (auth()->user()->role === 'begeleider')
+                            Er zijn nog geen lessen aan jou toegewezen.
+                        @else
+                            Er zijn momenteel geen lessen beschikbaar.
+                        @endif
                     </div>
                 @endforelse
             </div>
