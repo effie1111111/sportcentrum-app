@@ -39,6 +39,9 @@
                         <a href="{{ route('lessen.aanmaken') }}" class="text-sm text-white hover:text-blue-200">
                             Les aanmaken
                         </a>
+                        <a href="{{ route('admin.begeleiders.create') }}" class="text-sm text-white hover:text-blue-200">
+                            Begeleider aanmaken
+                        </a>
                     @endif
                 </div>
             </div>
@@ -104,6 +107,9 @@
         @if (auth()->user()->role === 'admin' || auth()->user()->rol === 'beheerder')
             <a href="{{ route('lessen.aanmaken') }}" class="block text-white">
                 Les aanmaken
+            </a>
+            <a href="{{ route('admin.begeleiders.create') }}" class="block text-white">
+                Begeleider aanmaken
             </a>
         @endif
     </div>
