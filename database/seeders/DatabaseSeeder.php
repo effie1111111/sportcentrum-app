@@ -45,6 +45,13 @@ class DatabaseSeeder extends Seeder
                 'role' => 'begeleider',
             ],
             [
+                'name' => 'Ron de Wit',
+                'email' => 'ronsikerem2@gmail.com',
+                'telefoon' => null,
+                'rol' => 'lid',
+                'role' => 'begeleider',
+            ],
+            [
                 'name' => 'Sam de Vries',
                 'email' => 'sam@example.test',
                 'telefoon' => '0633333333',
@@ -104,7 +111,7 @@ class DatabaseSeeder extends Seeder
                     'rol' => $data['rol'],
                     'role' => $data['role'],
                     'password' => Hash::make(
-                        $data['email'] === 'Admin@gmail.com'
+                        in_array($data['email'], ['Admin@gmail.com', 'ronsikerem2@gmail.com'], true)
                             ? '12345678'
                             : 'password'
                     ),

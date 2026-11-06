@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminTrainerController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
@@ -38,7 +39,6 @@ Route::get('/lessen', [LessonController::class, 'index'])
     ->middleware('auth')
     ->name('lessen.index');
 
-// Alleen een beheerder kan lessen aanmaken of verwijderen.
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/lessen/aanmaken', [LessonController::class, 'create'])
         ->name('lessen.aanmaken');
@@ -48,9 +48,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::delete('/lessen/{lesson}', [LessonController::class, 'destroy'])
         ->name('lessen.verwijderen');
+
+    Route::get('/admin/begeleiders/aanmaken', [AdminTrainerController::class, 'create'])
+        ->name('admin.begeleiders.create');
+
+    Route::post('/admin/begeleiders', [AdminTrainerController::class, 'store'])
+        ->name('admin.begeleiders.store');
 });
 
-// Inschrijvingen.
 Route::post('/lessen/{lesson}/inschrijven', [EnrollmentController::class, 'store'])
     ->middleware('auth')
     ->name('lessen.inschrijven');
